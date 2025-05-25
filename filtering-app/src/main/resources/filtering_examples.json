@@ -130,7 +130,6 @@
     "Prompt injection is still a serious problem with user-generated queries.",
     "Benchmarking MPNET vs E5 for semantic search on small documents.",
     "Evaluating different rerankers after embedding retrieval. Cohere is looking promising.",
-    "Using LangChain with Weaviate for a hybrid search setup—pretty flexible combo.",
     "Just realized model hallucinations go way up when you over-truncate context.",
     "Trying to map HF Transformers output logits to classification scores manually. Painful but interesting.",
     "Pipeline: embed with Sentence-BERT, retrieve via Pinecone, rerank with BAAI/bge-reranker.",

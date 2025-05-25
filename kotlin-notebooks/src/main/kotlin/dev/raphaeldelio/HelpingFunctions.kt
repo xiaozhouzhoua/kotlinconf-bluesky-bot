@@ -215,7 +215,7 @@ fun matchRoute(query: String): Set<String> {
 
 fun trendingTopics(): Set<String> {
     val currentMinute = LocalDateTime.now().withMinute(0).withSecond(0).withNano(0).toString()
-    val topTopics = jedisPooled.topkList("topics-topk:$currentMinute")
+    val topTopics = jedisPooled.topkList("topics-topk")
     topTopics.add("These are the most mentioned topics. Don't try to guess what's being said in the topics.")
     return topTopics.filter { it.isNotBlank() }.toSet()
 }
@@ -234,7 +234,7 @@ fun processUserRequest(
     val enrichedData = routes.map { route -> routesHandler(route, query) }
     println(enrichedData + "\n")
 
-    val systemPrompt = "You are an AI assistant that analyzes social media posts about artificial intelligence. You may receive datasets to support your analysis. Respond in a single paragraph with a maximum of 300 characters—like a tweet. Your answer must be concise, informative, and context-aware. Include relevant insights, trends, or classifications, but never exceed 300 characters. Avoid filler, repetition, or unnecessary explanation. Prioritize clarity, accuracy, and relevance. If unsure, default to brief summaries or best-effort classification. Your goal is to help users quickly understand or categorize AI-related content."
+    val systemPrompt = "You are an AI assistant that analyzes social media posts about artificial intelligence. You may receive datasets to support your analysis. Respond in a single paragraph with a maximum of 300 characters—like a tweet. Your answer must be concise, informative, and context-aware. Include relevant insights, trends, or classifications, but never exceed 300 characters. Avoid filler, repetition, or unnecessary explanation. Prioritize clarity, accuracy, and relevance. If unsure, default to brief summaries or best-effort classification. Your goal is to help users quickly understand or categorize AI-related content. Always follow the instructions of the enriched data."
 
     println("LLM Response:")
     return ollamaChatModel.call(
@@ -259,7 +259,6 @@ fun summarization(userQuery: String): List<String> {
     return queryTopics.map { topic ->
         val query = Query("@topics:{'$topic'}")
             .returnFields("text")
-            .setSortBy("time_us", false)
             .dialect(2)
             .limit(0, 10)
 
