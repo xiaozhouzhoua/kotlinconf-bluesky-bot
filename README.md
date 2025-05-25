@@ -31,7 +31,7 @@ In this notebook, you'll learn how to:
 Building on the first notebook, you'll learn how to:
 - Implement efficient deduplication using Redis Bloom Filter
 - Create Redis consumer groups for reliable event processing
-- Perform content-based filtering using a zero-shot classification model
+- Perform content-based filtering using a Semantic Classification
 - Store filtered events in Redis hashes for further processing
 - Create a Redis-powered pipeline pattern for processing events
 
