@@ -107,7 +107,7 @@ private fun getOllamaChatModel(): OllamaChatModel {
         .build()
 }
 
-val topicModelingSystemPrompt = File("/Users/raphaeldelio/Documents/GitHub/redis/kotlinconf-bsky-bot/topic-extraction-app/src/main/resources/topic-extractor-prompt.txt").readText()
+val topicExtractionSystemPrompt = File("/Users/raphaeldelio/Documents/GitHub/redis/kotlinconf-bsky-bot/topic-extraction-app/src/main/resources/topic-extractor-prompt.txt").readText()
 
 fun createConsumerGroup(jedis: JedisPooled, streamName: String, consumerGroupName: String) {
     try {
@@ -178,7 +178,7 @@ fun consumeStream(
 
 fun extractTopics(chatModel: ChatModel, post: String, existingTopics: String): String {
     val messages = listOf(
-        SystemMessage(topicModelingSystemPrompt),
+        SystemMessage(topicExtractionSystemPrompt),
         UserMessage("Existing topics: $existingTopics"),
         UserMessage("Post: $post")
     )
