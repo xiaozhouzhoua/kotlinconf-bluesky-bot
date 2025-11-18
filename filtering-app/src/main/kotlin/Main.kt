@@ -249,7 +249,7 @@ fun getRedisVectorStore(jedisPooled: JedisPooled, embeddingModel: TransformersEm
 }
 
 fun loadReferencesIntoRedis(redisVectorStore: RedisVectorStore) {
-    val references = Json.decodeFromString<List<String>>(File("/Users/raphaeldelio/Documents/GitHub/redis/kotlinconf-bsky-bot/filtering-app/src/main/resources/filtering_examples.json").readText())
+    val references = Json.decodeFromString<List<String>>(File("filtering-app/src/main/resources/filtering_examples.json").readText())
 
     val documents = references.map { text ->
         createFilterDocument(text)

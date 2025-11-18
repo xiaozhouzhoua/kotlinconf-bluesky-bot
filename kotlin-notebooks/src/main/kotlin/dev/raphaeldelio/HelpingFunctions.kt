@@ -152,8 +152,13 @@ fun getEmbeddingModel(): TransformersEmbeddingModel {
 
 fun getEmbeddingModelForRouting(): TransformersEmbeddingModel {
     val embeddingModel = TransformersEmbeddingModel()
-    embeddingModel.setModelResource("file:resources/model/bge-large-en-v1.5/model.onnx")
-    embeddingModel.setTokenizerResource("file:resources/model/bge-large-en-v1.5/tokenizer.json")
+    try {
+        embeddingModel.setModelResource("file:kotlin-notebooks/notebooks/resources/model/bge-large-en-v1.5/model.onnx")
+        embeddingModel.setTokenizerResource("file:kotlin-notebooks/notebooks/resources/model/bge-large-en-v1.5/tokenizer.json")
+    } catch (e: Exception) {
+        println("Warning: Could not load embedding model files: ${e.message}")
+        // Fall back to default model
+    }
     embeddingModel.afterPropertiesSet()
     return embeddingModel
 }
@@ -169,7 +174,14 @@ val ollamaChatModel = OllamaChatModel.builder()
     .defaultOptions(ollamaOptions)
     .build()
 
-val topicModelingSystemPrompt = File("/Users/raphaeldelio/Documents/GitHub/redis/kotlinconf-bsky-bot/kotlin-notebooks/notebooks/resources/topic-extractor-prompt.txt").readText()
+val topicModelingSystemPrompt: String by lazy {
+    try {
+        File("kotlin-notebooks/notebooks/resources/topic-extractor-prompt.txt").readText()
+    } catch (e: Exception) {
+        println("Warning: Could not load topic-extractor-prompt.txt: ${e.message}")
+        "You are a topic extraction assistant. Extract topics from social media posts."
+    }
+}
 
 fun topicExtraction(post: String, existingTopics: String): String {
     val messages = listOf(
@@ -250,8 +262,8 @@ fun summarization(userQuery: String): List<String> {
     val existingTopics = jedisPooled.smembers("topics").joinToString { ", " }
     val queryTopics = topicExtraction(userQuery, existingTopics)
         .replace("\"", "")
-        .replace("“", "")
-        .replace("”", "")
+        .replace(""", "")
+        .replace(""", "")
         .split(", ")
         .map { it.trim() }
     println(queryTopics)
