@@ -7,7 +7,20 @@ group = "dev.raphaeldelio"
 version = "1.0-SNAPSHOT"
 
 repositories {
+    maven {
+        url = uri("https://maven.aliyun.com/repository/public/")
+        content {
+            includeGroupByRegex(".*")
+        }
+    }
+    maven {
+        url = uri("https://maven.aliyun.com/repository/google/")
+        content {
+            includeGroupByRegex(".*")
+        }
+    }
     mavenCentral()
+    google()
 }
 
 dependencies {
